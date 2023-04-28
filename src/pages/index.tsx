@@ -1,10 +1,30 @@
 import Head from 'next/head'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
+import { Grid, Card, Text } from '@nextui-org/react'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+  type FooterItemProps = {
+    title: string
+    text: string
+  }
+  const FooterItem = ({ title, text }: FooterItemProps) => {
+    return (
+      <Card>
+        <Card.Header>
+          <Text h4>{title}</Text>
+        </Card.Header>
+        <Card.Body>
+          <Text h6 size={15} css={{ mt: 0 }}>
+            {text}
+          </Text>
+        </Card.Body>
+      </Card>
+    )
+  }
+
   return (
     <>
       <Head>
@@ -23,55 +43,26 @@ export default function Home() {
 
         <div className={styles.center}>Mardown Editor - placeholder</div>
 
-        <div className={styles.grid}>
-          <a
-            href=""
-            className={styles.card}
-            target="_self"
-            rel="noopener noreferrer"
-          >
-            <h2>
-              Idea <span>-&gt;</span>
-            </h2>
-            <p>Find what the idea behing the project is.</p>
-          </a>
-
-          <a
-            href=""
-            className={styles.card}
-            target="_self"
-            rel="noopener noreferrer"
-          >
-            <h2>
-              Learn <span>-&gt;</span>
-            </h2>
-            <p>An overview about the functionalities of the editor.</p>
-          </a>
-
-          <a
-            href=""
-            className={styles.card}
-            target="_self"
-            rel="noopener noreferrer"
-          >
-            <h2>
-              Write <span>-&gt;</span>
-            </h2>
-            <p>Start to write your thoughts.</p>
-          </a>
-
-          <a
-            href=""
-            className={styles.card}
-            target="_self"
-            rel="noopener noreferrer"
-          >
-            <h2>
-              GitHub <span>-&gt;</span>
-            </h2>
-            <p>Discover the project and learn how to contribute.</p>
-          </a>
-        </div>
+        <Grid.Container gap={2} justify="center">
+          <Grid xs={4}>
+            <FooterItem
+              title="Idea"
+              text="Find what the idea behing the project is."
+            />
+          </Grid>
+          <Grid xs={4}>
+            <FooterItem
+              title="Learn"
+              text="An overview about the functionalities of the editor."
+            />
+          </Grid>
+          <Grid xs={4}>
+            <FooterItem
+              title="GitHub"
+              text="Discover the project and learn how to contribute."
+            />
+          </Grid>
+        </Grid.Container>
       </main>
     </>
   )
