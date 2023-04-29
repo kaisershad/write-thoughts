@@ -3,13 +3,25 @@ import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import { Grid, Card, Text } from '@nextui-org/react'
 
+import MarkdownIt from 'markdown-it'
+import MdEditor from 'react-markdown-editor-lite'
+// import style manually
+import 'react-markdown-editor-lite/lib/index.css'
+
 const inter = Inter({ subsets: ['latin'] })
 
+const mdParser = new MarkdownIt()
+
+type FooterItemProps = {
+  title: string
+  text: string
+}
+type ContentProps = {
+  html: any
+  text: any
+}
+
 export default function Home() {
-  type FooterItemProps = {
-    title: string
-    text: string
-  }
   const FooterItem = ({ title, text }: FooterItemProps) => {
     return (
       <Card>
@@ -23,6 +35,9 @@ export default function Home() {
         </Card.Body>
       </Card>
     )
+  }
+  const handleEditorChange = ({ html, text }: ContentProps) => {
+    console.log('handleEditorChange', html, text)
   }
 
   return (
@@ -41,7 +56,11 @@ export default function Home() {
           </p>
         </div>
 
-        <div className={styles.center}>Mardown Editor - placeholder</div>
+        <MdEditor
+          style={{ height: '800px', minWidth: '1400px' }}
+          renderHTML={(text) => mdParser.render(text)}
+          onChange={handleEditorChange}
+        />
 
         <Grid.Container gap={2} justify="center">
           <Grid xs={4}>
