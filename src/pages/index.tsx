@@ -19,6 +19,8 @@ import { useState } from 'react'
 type FileProps = {
   id: string | number
   title: string
+  created: string
+  updated?: string
   tags?: string[]
 }
 
@@ -36,32 +38,44 @@ export default function Home() {
   const columns = [
     { name: 'TITLE', uid: 'title' },
     { name: 'TAGS', uid: 'tags' },
+    { name: 'CREATED', uid: 'created' },
+    { name: 'UPDATED', uid: 'updated' },
     { name: 'ACTIONS', uid: 'actions' },
   ]
   const files: FileProps[] = [
     {
       id: 1234,
       title: 'First thought',
+      created: '2022-10-21',
+      updated: '2023-04-14',
       tags: ['studies'],
     },
     {
       id: 3245,
       title: 'Second thought',
+      created: '2021-12-11',
+      updated: '2023-03-04',
       tags: ['studies', 'learning'],
     },
     {
       id: 1221,
       title: 'Third thought',
+      created: '2022-01-01',
+      updated: '',
       tags: [],
     },
     {
       id: 3214,
       title: 'Forth thought',
+      created: '2021-12-11',
+      updated: '2023-03-04',
       tags: ['experience'],
     },
     {
       id: 9870,
       title: 'Fifth thought',
+      created: '2021-12-11',
+      updated: '2023-03-04',
       tags: ['work'],
     },
   ]
@@ -77,6 +91,10 @@ export default function Home() {
         ) : (
           <></>
         )
+      case 'created':
+        return cellValue
+      case 'updated':
+        return cellValue
       case 'actions':
         return (
           <Row justify="center" align="center">
@@ -88,9 +106,9 @@ export default function Home() {
               </Tooltip>
             </Col>
             <Col css={{ d: 'flex' }}>
-              <Tooltip content="Edit">
+              <Tooltip content="Edit" color={'primary'}>
                 <IconButton onClick={() => console.log('Edit file', file?.id)}>
-                  <EditIcon size={20} fill="#979797" />
+                  <EditIcon size={20} fill="#0072F5" />
                 </IconButton>
               </Tooltip>
             </Col>

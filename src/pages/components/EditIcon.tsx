@@ -6,7 +6,7 @@ type IconProps = {
   label?: string
 }
 
-export const EditIcon: React.FC<IconProps> = ({
+const EditIcon: React.FC<IconProps> = ({
   fill,
   size,
   height,
