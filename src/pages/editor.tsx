@@ -1,5 +1,6 @@
-import { Button, Input, Grid } from '@nextui-org/react'
+import { Button, Input, Grid, Link } from '@nextui-org/react'
 import { useState } from 'react'
+import Header from '@/pages/components/header'
 import MarkdownIt from 'markdown-it'
 import MdEditor from 'react-markdown-editor-lite'
 // import style manually
@@ -28,7 +29,13 @@ export default function Editor() {
 
   return (
     <>
+      <Header />
       <Grid.Container style={{ backgroundColor: 'white' }} gap={2}>
+        <Grid style={{ display: 'flex' }}>
+          <Link href="/" color={'secondary'}>
+            &#60; back
+          </Link>
+        </Grid>
         <Grid>
           <Input
             underlined
@@ -36,11 +43,12 @@ export default function Editor() {
             placeholder="Add file name ..."
             value={title}
             onChange={handleTitle}
+            clearable
             required
           />
         </Grid>
         <Grid>
-          <Button auto rounded flat>
+          <Button auto rounded flat disabled={title === '' ? true : false}>
             Save
           </Button>
         </Grid>
@@ -49,21 +57,30 @@ export default function Editor() {
             underlined
             labelLeft="tag"
             placeholder="Add tag name ..."
-            value={title}
+            value={tag}
             onChange={handleTag}
+            clearable
           />
         </Grid>
         <Grid>
-          <Button auto rounded flat color={'secondary'}>
+          <Button
+            auto
+            rounded
+            flat
+            color={'secondary'}
+            disabled={tag === '' ? true : false}
+          >
             Add
           </Button>
         </Grid>
       </Grid.Container>
-      <MdEditor
-        style={{ height: '1200px' }}
-        renderHTML={(text) => mdParser.render(text)}
-        onChange={handleEditorChange}
-      />
+      <main>
+        <MdEditor
+          style={{ height: '1200px' }}
+          renderHTML={(text) => mdParser.render(text)}
+          onChange={handleEditorChange}
+        />
+      </main>
     </>
   )
 }
