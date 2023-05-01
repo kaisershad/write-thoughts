@@ -1,43 +1,198 @@
-import Head from 'next/head'
-import { Navbar, Button, Link, Text } from '@nextui-org/react'
-import Editor from './editor'
+import Header from '@/pages/components/header'
+import {
+  Grid,
+  Input,
+  Button,
+  Link,
+  Table,
+  Badge,
+  Row,
+  Col,
+  Tooltip,
+} from '@nextui-org/react'
+import IconButton from '@/pages/components/IconButton'
+import EyeIcon from '@/pages/components/EyeIcon'
+import EditIcon from '@/pages/components/EditIcon'
+import DeleteIcon from '@/pages/components/DeleteIcon'
+import { useState } from 'react'
+
+type FileProps = {
+  id: string | number
+  title: string
+  tags?: string[]
+}
 
 export default function Home() {
+  const [searchByTitle, setSearchByTitle] = useState('')
+  const [filterByTag, setFilterByTag] = useState('')
+
+  const handleSearch = (e: any) => {
+    setSearchByTitle(e.target.value)
+  }
+  const handleFilter = (e: any) => {
+    setFilterByTag(e.target.value)
+  }
+
+  const columns = [
+    { name: 'TITLE', uid: 'title' },
+    { name: 'TAGS', uid: 'tags' },
+    { name: 'ACTIONS', uid: 'actions' },
+  ]
+  const files: FileProps[] = [
+    {
+      id: 1234,
+      title: 'First thought',
+      tags: ['studies'],
+    },
+    {
+      id: 3245,
+      title: 'Second thought',
+      tags: ['studies', 'learning'],
+    },
+    {
+      id: 1221,
+      title: 'Third thought',
+      tags: [],
+    },
+    {
+      id: 3214,
+      title: 'Forth thought',
+      tags: ['experience'],
+    },
+    {
+      id: 9870,
+      title: 'Fifth thought',
+      tags: ['work'],
+    },
+  ]
+
+  const renderCell = (file: any, columnKey: React.Key) => {
+    const cellValue = file[columnKey]
+    switch (columnKey) {
+      case 'title':
+        return cellValue
+      case 'tags':
+        return cellValue ? (
+          cellValue.map((tag: string) => <Badge key={tag}>{tag}</Badge>)
+        ) : (
+          <></>
+        )
+      case 'actions':
+        return (
+          <Row justify="center" align="center">
+            <Col css={{ d: 'flex' }}>
+              <Tooltip content="Preview">
+                <IconButton onClick={() => console.log('View file', file?.id)}>
+                  <EyeIcon size={20} fill="#979797" />
+                </IconButton>
+              </Tooltip>
+            </Col>
+            <Col css={{ d: 'flex' }}>
+              <Tooltip content="Edit">
+                <IconButton onClick={() => console.log('Edit file', file?.id)}>
+                  <EditIcon size={20} fill="#979797" />
+                </IconButton>
+              </Tooltip>
+            </Col>
+            <Col css={{ d: 'flex' }}>
+              <Tooltip
+                content="Delete"
+                color="error"
+                onClick={() => console.log('Delete file', file?.id)}
+              >
+                <IconButton>
+                  <DeleteIcon size={20} fill="#FF0080" />
+                </IconButton>
+              </Tooltip>
+            </Col>
+          </Row>
+        )
+      default:
+        return cellValue
+    }
+  }
+
   return (
     <>
-      <Head>
-        <title>write thoughts</title>
-        <meta name="description" content="Build by kaisershad" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <main>
-        <Navbar maxWidth={'fluid'} isBordered borderWeight="normal">
-          <Navbar.Brand>
-            <Text b color="inherit" hideIn="xs">
-              WRITE THOUGHTS
-            </Text>
-          </Navbar.Brand>
-          <Navbar.Content hideIn="xs">
-            <Navbar.Link href="#">Overview</Navbar.Link>
-            <Navbar.Link isActive href="#">
-              Editor
-            </Navbar.Link>
-            <Navbar.Link href="#">Features</Navbar.Link>
-            <Navbar.Link href="#">About us</Navbar.Link>
-          </Navbar.Content>
-          <Navbar.Content>
-            <Navbar.Link color="inherit" href="#">
-              Login
-            </Navbar.Link>
-            <Navbar.Item>
-              <Button auto flat as={Link} href="#">
-                Sign Up
-              </Button>
-            </Navbar.Item>
-          </Navbar.Content>
-        </Navbar>
-        <Editor />
+      <Header />
+      <Grid.Container style={{ backgroundColor: 'white' }} gap={2}>
+        <Grid style={{ display: 'flex' }}>
+          <Link href="/editor" color={'secondary'}>
+            Write a new thought
+          </Link>
+        </Grid>
+        <Grid>
+          <Input
+            underlined
+            labelLeft="title"
+            placeholder="Search by file ..."
+            value={searchByTitle}
+            onChange={handleSearch}
+            clearable
+          />
+        </Grid>
+        <Grid>
+          <Button
+            auto
+            rounded
+            flat
+            disabled={searchByTitle === '' ? true : false}
+          >
+            Search
+          </Button>
+        </Grid>
+        <Grid>
+          <Input
+            underlined
+            labelLeft="tag"
+            placeholder="Filter by tag ..."
+            value={filterByTag}
+            onChange={handleFilter}
+            clearable
+          />
+        </Grid>
+        <Grid>
+          <Button
+            auto
+            rounded
+            flat
+            color={'secondary'}
+            disabled={filterByTag === '' ? true : false}
+          >
+            Filter
+          </Button>
+        </Grid>
+      </Grid.Container>
+      <main style={{ backgroundColor: 'white' }}>
+        <Table
+          aria-label="Example table with custom cells"
+          css={{
+            height: 'auto',
+            minWidth: '100%',
+          }}
+          lined
+        >
+          <Table.Header columns={columns}>
+            {(column) => (
+              <Table.Column
+                key={column.uid}
+                hideHeader={column.uid === 'actions'}
+                align={column.uid === 'actions' ? 'center' : 'start'}
+              >
+                {column.name}
+              </Table.Column>
+            )}
+          </Table.Header>
+          <Table.Body items={files}>
+            {(item: FileProps) => (
+              <Table.Row>
+                {(columnKey) => (
+                  <Table.Cell>{renderCell(item, columnKey)}</Table.Cell>
+                )}
+              </Table.Row>
+            )}
+          </Table.Body>
+        </Table>
       </main>
     </>
   )
