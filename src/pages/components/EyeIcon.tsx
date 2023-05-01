@@ -1,5 +1,3 @@
-import IconButton from './IconButton'
-
 type IconProps = {
   fill?: string
   size?: string | number
