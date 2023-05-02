@@ -1,5 +1,7 @@
-import { Button, Input, Grid, Link } from '@nextui-org/react'
-import { useState } from 'react'
+'use client'
+
+import { Button, Input, Grid, Link, FormElement } from '@nextui-org/react'
+import { useState, ChangeEvent } from 'react'
 import Header from '@/pages/components/header'
 import MarkdownIt from 'markdown-it'
 import MdEditor from 'react-markdown-editor-lite'
@@ -9,8 +11,8 @@ import 'react-markdown-editor-lite/lib/index.css'
 const mdParser = new MarkdownIt()
 
 type ContentProps = {
-  html: any
-  text: any
+  html: string
+  text: string
 }
 
 export default function Editor() {
@@ -20,11 +22,11 @@ export default function Editor() {
   const [title, setTitle] = useState('')
   const [tag, setTag] = useState('')
 
-  const handleTitle = (e: any) => {
-    setTitle(e.target.value)
+  const handleTitle = (event: ChangeEvent<FormElement>) => {
+    setTitle(event.target.value)
   }
-  const handleTag = (e: any) => {
-    setTag(e.target.value)
+  const handleTag = (event: ChangeEvent<FormElement>) => {
+    setTag(event.target.value)
   }
 
   return (
@@ -39,6 +41,7 @@ export default function Editor() {
         <Grid>
           <Input
             underlined
+            aria-label="Add title"
             labelLeft="title"
             placeholder="Add file name ..."
             value={title}
@@ -55,6 +58,7 @@ export default function Editor() {
         <Grid>
           <Input
             underlined
+            aria-label="Add tag"
             labelLeft="tag"
             placeholder="Add tag name ..."
             value={tag}
@@ -76,7 +80,7 @@ export default function Editor() {
       </Grid.Container>
       <main>
         <MdEditor
-          style={{ height: '1200px' }}
+          style={{ height: '100vh' }}
           renderHTML={(text) => mdParser.render(text)}
           onChange={handleEditorChange}
         />
