@@ -1,3 +1,5 @@
+'use client'
+
 import Header from '@/pages/components/header'
 import {
   Grid,
@@ -9,12 +11,13 @@ import {
   Row,
   Col,
   Tooltip,
+  FormElement,
 } from '@nextui-org/react'
 import IconButton from '@/pages/components/IconButton'
 import EyeIcon from '@/pages/components/EyeIcon'
 import EditIcon from '@/pages/components/EditIcon'
 import DeleteIcon from '@/pages/components/DeleteIcon'
-import { useState } from 'react'
+import { useState, ChangeEvent, Key } from 'react'
 
 type FileProps = {
   id: string | number
@@ -28,11 +31,11 @@ export default function Home() {
   const [searchByTitle, setSearchByTitle] = useState('')
   const [filterByTag, setFilterByTag] = useState('')
 
-  const handleSearch = (e: any) => {
-    setSearchByTitle(e.target.value)
+  const handleSearch = (event: ChangeEvent<FormElement>) => {
+    setSearchByTitle(event.target.value)
   }
-  const handleFilter = (e: any) => {
-    setFilterByTag(e.target.value)
+  const handleFilter = (event: ChangeEvent<FormElement>) => {
+    setFilterByTag(event.target.value)
   }
 
   const columns = [
@@ -80,7 +83,7 @@ export default function Home() {
     },
   ]
 
-  const renderCell = (file: any, columnKey: React.Key) => {
+  const renderCell = (file: any, columnKey: Key) => {
     const cellValue = file[columnKey]
     switch (columnKey) {
       case 'title':
@@ -142,6 +145,8 @@ export default function Home() {
         <Grid>
           <Input
             underlined
+            id="search-title"
+            aria-label="Search by title"
             labelLeft="title"
             placeholder="Search by file ..."
             value={searchByTitle}
@@ -152,6 +157,7 @@ export default function Home() {
         <Grid>
           <Button
             auto
+            id="search-title"
             rounded
             flat
             disabled={searchByTitle === '' ? true : false}
@@ -162,6 +168,8 @@ export default function Home() {
         <Grid>
           <Input
             underlined
+            id="filter-tag"
+            aria-label="Filter by tag"
             labelLeft="tag"
             placeholder="Filter by tag ..."
             value={filterByTag}
@@ -172,6 +180,7 @@ export default function Home() {
         <Grid>
           <Button
             auto
+            id="filter-tag"
             rounded
             flat
             color={'secondary'}

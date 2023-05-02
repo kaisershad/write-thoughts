@@ -1,3 +1,5 @@
+'use client'
+
 import { Container, Card, Text } from '@nextui-org/react'
 import Header from '@/pages/components/header'
 
