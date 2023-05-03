@@ -90,7 +90,11 @@ export default function Home() {
         return cellValue
       case 'tags':
         return cellValue ? (
-          cellValue.map((tag: string) => <Badge key={tag}>{tag}</Badge>)
+          cellValue.map((tag: string) => (
+            <Badge color={'secondary'} key={tag}>
+              {tag}
+            </Badge>
+          ))
         ) : (
           <></>
         )
