@@ -5,6 +5,7 @@ import { useState, ChangeEvent } from 'react'
 import Header from '@/pages/components/header'
 import MarkdownIt from 'markdown-it'
 import MdEditor from 'react-markdown-editor-lite'
+import DeleteIcon from '@/pages/components/DeleteIcon'
 // import style manually
 import 'react-markdown-editor-lite/lib/index.css'
 
@@ -15,18 +16,31 @@ type ContentProps = {
   text: string
 }
 
+type TagsProp = string[]
+
 export default function Editor() {
   const handleEditorChange = ({ html, text }: ContentProps) => {
-    console.log('handleEditorChange', html, text)
+    return { html, text }
   }
   const [title, setTitle] = useState('')
   const [tag, setTag] = useState('')
+  const [tags, setTags] = useState<TagsProp>([])
 
   const handleTitle = (event: ChangeEvent<FormElement>) => {
     setTitle(event.target.value)
   }
   const handleTag = (event: ChangeEvent<FormElement>) => {
     setTag(event.target.value)
+  }
+
+  const submitTitle = () => {
+    console.log(title, handleEditorChange)
+  }
+
+  const submitTag = () => {
+    tags.push(tag)
+    setTag('')
+    console.log(tags)
   }
 
   return (
@@ -51,7 +65,13 @@ export default function Editor() {
           />
         </Grid>
         <Grid>
-          <Button auto rounded flat disabled={title === '' ? true : false}>
+          <Button
+            auto
+            rounded
+            flat
+            disabled={title === '' ? true : false}
+            onPress={submitTitle}
+          >
             Save
           </Button>
         </Grid>
@@ -73,10 +93,25 @@ export default function Editor() {
             flat
             color={'secondary'}
             disabled={tag === '' ? true : false}
+            onPress={submitTag}
           >
             Add
           </Button>
         </Grid>
+        {tags.map((addedTag) => {
+          return (
+            <Button
+              key={addedTag}
+              style={{ alignSelf: 'center' }}
+              light
+              color={'secondary'}
+              iconRight={<DeleteIcon size={14} fill="#7828C8" />}
+              auto
+            >
+              {addedTag}
+            </Button>
+          )
+        })}
       </Grid.Container>
       <main>
         <MdEditor
